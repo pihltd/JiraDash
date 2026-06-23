@@ -3,7 +3,6 @@ from src.layouts.jiraLayout import *
 
 app = Dash(
     __name__,
-    #external_stylesheets=external_stylesheets,
     suppress_callback_exceptions=True,
     prevent_initial_callbacks=True,
     update_title="Updating..."
@@ -15,7 +14,6 @@ app.layout = html.Div([
     dcc.Store(id='activesprintticketsstore'),
     dcc.Store(id='futuresprintstore'),
     dcc.Store(id='futuresprintticketstore'),
-    #activesection
     sitelayout
 ])
 
