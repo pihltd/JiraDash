@@ -1,9 +1,12 @@
 from dash import html, dcc
 import src.layouts.jiraStyles as js
+import dash_loading_spinners as dls
 
 ###########################################################
 #    INDIVIDUAL COMPONENTS                                                         
 ##########################################################
+
+# TODO:  Apparently the points on user stories are only QA points, the tasks have the development points.
 
 #
 # Active Tab 1
@@ -19,6 +22,7 @@ loadbutton = html.Div([
     dcc.Button("Click to load the active sprint",id='loadbutton', n_clicks=0)
 ])
 
+
 activePointSummaryTable = html.Div([
     dcc.Loading([
         html.H2('Active Sprint Point Totals'),
@@ -27,6 +31,15 @@ activePointSummaryTable = html.Div([
     ])
 ])
 
+'''
+activePointSummaryTable = html.Div([
+    dls.Hash([
+        html.H2('Active Sprint Point Totals'),
+        html.Hr(),
+        html.Div(id='activepointsummary')
+    ])
+])
+'''
 activeFrontBackSummaryTable = html.Div([
     dcc.Loading([
         html.H2('Active Component Point Totals'),

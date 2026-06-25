@@ -5,6 +5,7 @@ import src.functions.jiraFunctions as jf
 import pandas as pd
 import io
 
+
 #
 #  ACTIVE DATASTORES
 #
@@ -50,6 +51,7 @@ def populateActiveSprintTicketsStore(sprintdata, n_clicks):
 def activeSprintPoints(activesprintticketsstore):
     df = pd.read_json(io.StringIO(activesprintticketsstore), orient='split')
     stafflist = df['assignee'].unique().tolist()
+    # Need to separate QA points (User Stories) from development points (Tasks)
     pointlist = []
     for staff in stafflist:
         temp_df = df.query('assignee == @staff')
