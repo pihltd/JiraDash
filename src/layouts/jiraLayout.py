@@ -22,7 +22,7 @@ loadbutton = html.Div([
     dcc.Button("Click to load the active sprint",id='loadbutton', n_clicks=0)
 ])
 
-
+'''
 activePointSummaryTable = html.Div([
     dcc.Loading([
         html.H2('Active Sprint Point Totals'),
@@ -30,16 +30,16 @@ activePointSummaryTable = html.Div([
         html.Div(id='activepointsummary')
     ])
 ])
-
 '''
+
 activePointSummaryTable = html.Div([
-    dls.Hash([
         html.H2('Active Sprint Point Totals'),
         html.Hr(),
+        #dls.Hash(
         html.Div(id='activepointsummary')
-    ])
+        #)
 ])
-'''
+
 activeFrontBackSummaryTable = html.Div([
     dcc.Loading([
         html.H2('Active Component Point Totals'),
