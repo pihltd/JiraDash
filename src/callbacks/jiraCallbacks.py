@@ -35,7 +35,8 @@ def populateActiveSprintTicketsStore(sprintdata, n_clicks):
         raise PreventUpdate
     else:
         activeID = sprintdata[0]['id']
-        ticket_df = jf.getSprintTickets(activeID)
+        sprintstartdate = sprintdata[0]['startDate']
+        ticket_df = jf.getSprintTickets(activeID, sprintstartdate)
         return ticket_df.reset_index().to_json(orient='split')
     
     

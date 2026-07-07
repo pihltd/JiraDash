@@ -2,6 +2,8 @@ import requests
 import pandas as pd
 import os
 from dash import dash_table
+from dateutil import parser
+from dateutil.relativedelta import relativedelta
 
 def trackerGetAPIQuery(endpoint):
     apitoken = os.getenv('JIRAAPI')
@@ -51,19 +53,29 @@ def getSprints(status):
     else:
         return None
     
-def getSprintTickets(sprintID):
+def getSprintTickets(sprintID, sprintstartdate=None):
     getissues = f"/rest/agile/1.0/sprint/{sprintID}/issue"
     res = trackerGetAPIQuery(getissues)
     ticket_df = pd.DataFrame(res['issues'])
     ticketlist = ticket_df['id'].unique().tolist()
-    
     ticketreport = []
     for ticket in ticketlist:
-        singleticket = f"/rest/api/2/issue/{ticket}"
+        singleticket = f"/rest/api/2/issue/{ticket}?expand=changelog"
         singleres = trackerGetAPIQuery(singleticket)
         
         ticketfields = singleres['fields']
         ticketdata = {}
+        
+        #Get last change time
+        lastchange = singleres['changelog']['histories'][-1]
+        #lasttime = parser.parse(lastchange['created'])
+        lasttime = lastchange['created']
+        #Caclulate elapsed time
+        if sprintstartdate is not None:
+            sprinttime = parser.parse(sprintstartdate)
+            ticketime = parser.parse(lasttime)
+            elapsed = relativedelta(ticketime, sprinttime).days
+        
         ticketdata['ticket'] = issueParser(singleres, 'key')
         ticketdata['ticketID'] = issueParser(singleres, 'id')
         ticketdata['assignee'] = issueParser(ticketfields, 'assignee', 'displayName')
@@ -75,6 +87,12 @@ def getSprintTickets(sprintID):
         ticketdata['components'] = str(lister(ticketfields['components'], 'name'))
         ticketdata['comments'] = str(lister(ticketfields['comment']['comments'], 'body'))
         ticketdata['release'] = str(lister(ticketfields['fixVersions'], 'name'))
+        # Time stuff
+        ticketdata['enddate'] = lasttime
+        if sprintstartdate is not None:
+            ticketdata['elaped_time'] = elapsed
+       # ticketstuff['elapsed_days'] = relativedelta(lasttime, sprintstart).days
+        #
         ticketreport.append(ticketdata)
     return pd.DataFrame(ticketreport)
        

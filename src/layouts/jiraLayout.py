@@ -145,6 +145,15 @@ futuresprinttable = html.Div([
     ])
 ])
 
+
+burndownchart = html.Div([
+    dcc.Loading([
+        html.H2('Active Sprint Burndown'),
+        html.Hr(),
+        html.Div(id='burndownchart')
+    ])
+])
+
 ###########################################################
 #    Group layouts                                                       
 ##########################################################
@@ -166,6 +175,9 @@ activeConglomerate = html.Div([
                 html.Div(activeFrontBackSummaryTable)
             ],
             style={'width':'50%', 'display':'inline-block'},
+        ),
+        html.Div(
+            children=[burndownchart]
         )
     ])
 ])
